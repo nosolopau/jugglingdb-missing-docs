@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="JugglingDB: the missing documentation : Yeah" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>JugglingDB: the missing documentation</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/nosolopau/jugglingdb-missing-docs">View on GitHub</a>
+
+          <h1 id="project_title">JugglingDB: the missing documentation</h1>
+          <h2 id="project_tagline">Yeah</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/nosolopau/jugglingdb-missing-docs/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/nosolopau/jugglingdb-missing-docs/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>JugglingDB: the missing documentation</h3>
+
+<h2>Methods, setters and so on</h2>
+
+<h3>Class methods</h3>
+
+<p>Static methods (methods with class scope) could be added declaring a function as a member of the model, as follows. Inside a class method, other class methods can be called using the model name as usual.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">"user.user"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">Number</span> <span class="p">},</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span> <span class="p">},</span>
+    <span class="nx">type_id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span> <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="nx">User</span><span class="p">.</span><span class="nx">findByTypeId</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">type_id</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">User</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span><span class="nx">where</span><span class="o">:</span> <span class="p">{</span><span class="nx">type_id</span><span class="o">:</span> <span class="nx">type_id</span><span class="p">}},</span> <span class="nx">cb</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>Instance methods</h3>
+
+<p>Instance methods can be added with prototype. Inside instance methods, the object itself can be called with this inside.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">"user.user"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">Number</span> <span class="p">},</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span> <span class="p">},</span>
+    <span class="nx">type_id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span> <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="nx">User</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fullUsername</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">username</span> <span class="o">+</span> <span class="s2">":"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">type_id</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>Setters</h3>
+
+<p>A custom setter can be defined as a virtual attribute for a model:</p>
+
+<div class="highlight"><pre><span class="nx">Role</span><span class="p">.</span><span class="nx">setter</span><span class="p">.</span><span class="nx">permissions</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">permissions</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_permissions</span> <span class="o">=</span> <span class="nx">permissions</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>Relations</h2>
+
+<p>When specifying model relations, the ORM will define some automatic methods for set and get the related objects. The relations can be of two types: hasMany and belongsTo. For instance, an author has many books, and each book belongs to an author. So we should mark the relation as “belongsTo” from the books side, since the books table will have the author id as a foreign key. From the authors side, we should specify a “hasMany” association with books.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">Author</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">"authors"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">Number</span> <span class="p">},</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span> <span class="p">}</span>
+<span class="p">});</span>
+<span class="nx">Author</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="nx">Book</span><span class="p">,</span> <span class="p">{</span><span class="nx">as</span><span class="o">:</span> <span class="s1">'books'</span><span class="p">,</span>  <span class="nx">foreignKey</span><span class="o">:</span> <span class="s1">'author_id'</span><span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">Book</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">"books"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">Number</span> <span class="p">},</span>
+    <span class="nx">title</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">String</span> <span class="p">}</span>
+    <span class="nx">author_id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">Number</span> <span class="p">},</span>
+<span class="p">});</span>
+<span class="nx">Book</span><span class="p">.</span><span class="nx">belongsTo</span><span class="p">(</span><span class="nx">Author</span><span class="p">,</span> <span class="p">{</span><span class="nx">as</span><span class="o">:</span> <span class="s1">'author'</span><span class="p">,</span> <span class="nx">foreignKey</span><span class="o">:</span> <span class="s1">'author_id'</span><span class="p">});</span>
+</pre></div>
+
+<p>To get an author books, we can use the automatic asynchronous getter as follows:</p>
+
+<div class="highlight"><pre><span class="nx">author</span><span class="p">.</span><span class="nx">books</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">books</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">books</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>And also we can get a book author by using:</p>
+
+<div class="highlight"><pre><span class="nx">book</span><span class="p">.</span><span class="nx">author</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">author</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">author</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>Validations</h2>
+
+<p>For format-related validations (length, size, data type...) that doesn’t require additional queries, you should use a synchronous validator. If the validator requires an asynchronous operation, you should use an asynchronous validator. You can use the built-in validators or write your own. Validators are executed when saving the instance (with .save, .updateAttributes, .create and this kind of methods), or when explicitly executing .isValid method.</p>
+
+<p>Official documentation is in: <a href="http://jsdoc.info/1602/jugglingdb/validatable.html">http://jsdoc.info/1602/jugglingdb/validatable.html</a>. 
+Asynchronous validations</p>
+
+<p>The method validateAsync can be used to perform an asynchronous-custom validation. For instance:</p>
+
+<div class="highlight"><pre><span class="nx">Role</span><span class="p">.</span><span class="nx">validateAsync</span><span class="p">(</span><span class="s1">'is_administrator'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">previous</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">previous</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">previous</span><span class="p">.</span><span class="nx">is_administrator</span> <span class="o">!==</span> <span class="nx">self</span><span class="p">.</span><span class="nx">is_administrator</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">err</span><span class="p">();</span>    
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">err</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="nx">done</span><span class="p">();</span>
+    <span class="p">});</span>
+<span class="p">},</span> <span class="s2">"can’t change this value"</span><span class="p">);</span>
+</pre></div>
+
+<h3>Getting the validations results</h3>
+
+<p>If the validation fails, the ORM returns a Validation error as a result of the .save method. Also, will include an array with the erros as result.errors.</p>
+
+<div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/roles'</span><span class="p">,</span> <span class="nx">checkAuth</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">newRole</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Role</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+    <span class="nx">newRole</span><span class="p">.</span><span class="nx">company_id</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">id_company</span><span class="p">;</span>
+    <span class="nx">newRole</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">errors</span><span class="p">);</span>
+            <span class="nx">next</span><span class="p">(</span><span class="k">new</span> <span class="nx">APIError</span><span class="p">(</span><span class="s1">'orm'</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">Http</span><span class="p">.</span><span class="nx">sendCreated</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">result</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">JugglingDB: the missing documentation maintained by <a href="https://github.com/nosolopau">nosolopau</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
