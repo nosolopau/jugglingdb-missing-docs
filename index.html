@@ -110,7 +110,9 @@
 <p>For format-related validations (length, size, data type...) that doesn’t require additional queries, you should use a synchronous validator. If the validator requires an asynchronous operation, you should use an asynchronous validator. You can use the built-in validators or write your own. Validators are executed when saving the instance (with .save, .updateAttributes, .create and this kind of methods), or when explicitly executing .isValid method.</p>
 
 <p>Official documentation is in: <a href="http://jsdoc.info/1602/jugglingdb/validatable.html">http://jsdoc.info/1602/jugglingdb/validatable.html</a>. 
-Asynchronous validations</p>
+</p>
+
+<h3>Asynchronous validations</h3>
 
 <p>The method validateAsync can be used to perform an asynchronous-custom validation. For instance:</p>
 
